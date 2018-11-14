@@ -3,7 +3,14 @@ package com.company;
 public class Point {
     private int pointStatus;
     private int xCoordinate;
-    private int YCoordinate;
+    private int yCoordinate;
+
+    public Point() {
+        this.pointStatus = Status.VIRGIN;
+        this.xCoordinate = -1;
+        this.yCoordinate= -1;
+
+    }
 
     public int getPointStatus() {
         return pointStatus;
@@ -21,11 +28,11 @@ public class Point {
         this.xCoordinate = xCoordinate;
     }
 
-    public int getYCoordinate() {
-        return YCoordinate;
+    public int getyCoordinate() {
+        return yCoordinate;
     }
 
-    public void setYCoordinate(int YCoordinate) {
-        this.YCoordinate = YCoordinate;
+    public void setyCoordinate(int yCoordinate) {
+        this.yCoordinate = yCoordinate;
     }
 }
