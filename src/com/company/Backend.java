@@ -2,6 +2,7 @@ package com.company;
 import java.util.*;
 
 import static java.lang.System.*;
+import static java.lang.Thread.sleep;
 
 interface DFS {
     default boolean DFS(Point start, Point end, ArrayList<ArrayList<Point>> grid) {
@@ -26,24 +27,35 @@ interface DFS {
         return false;
     }
 }
+// Inspired from hackerearth Tutorials
 interface BFS {
-    static boolean BFSs(Point start, Point end, Point grid[][], int gridSize) {
-        PriorityQueue<Point> adjacentPoints = null; // Probably a debug point
-        for (int x = 0; x < gridSize; x++) {
-            for (int y = 0; y < gridSize; y++) {
-                if (grid[x][y].equals(end))
-                    return true;
-                if (!grid[x][y].isChecked() && grid[x][y].getPointStatus()!=3) {
-                    grid[x][y].setPointStatus(Status.CHECKED);
-                } else {
-                    adjacentPoints.add((grid[x][y+1]));
-                    adjacentPoints.add((grid[x+1][y]));
-                    adjacentPoints.add((grid[x][y-1]));
-                    adjacentPoints.add((grid[x-1][y]));
+    public static void BFSs(Point start, Point end, Point[][] grid,  int gridSize, Frame frame) {
+        Stack<Point> queue = new Stack<Point>();
+        queue.add(start);
+        start.setPointStatus(Status.CHECKED);
+        frame.repaint();
+        while (!queue.isEmpty()) {
+            Point current = queue.pop();
+//            queue.remove(current);
+            for (Point neighbor : current.getNeighbors()) {
+                try {
+                    if (neighbor.getPointStatus() != Status.OBSTACLE && neighbor.getPointStatus() != Status.CHECKED) {
+                        queue.add(neighbor);
+                        neighbor.setPointStatus(Status.CHECKED);
+                        frame.repaint();
+                        sleep((long) 1000);
+                    }
+                }
+                catch (Exception e){
+                    System.out.println(e);
+                }
+                try {
+                    sleep((long)1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }
-        return false;
     }
 }
 public class Backend implements BFS {
@@ -51,21 +63,21 @@ public class Backend implements BFS {
     private static Point start;
     private static Point end;
     private static int gridSize;
+    private static Frame frame;
 
-    public Backend(int gridSize, Point[][] grid, Point start, Point end) {
+    public Backend(int gridSize, Point[][] grid, Point start, Point end, Frame frame) {
+//        grid = new Point[gridSize][gridSize];
         this.grid = grid;
         this.start = start;
         this.end = end;
         this.gridSize = gridSize;
+        this.frame = frame;
+        main();
     }
 
-    public static void main(String[] args) {
-        for (int x = 0; x < 100; x++) {
-            for (int y = 0; y < 100; y++) {
-                grid[x][y].setXCoordinate(x + 1);
-                grid[x][y].setYCoordinate(y + 1);
-            }
-            System.out.println(BFS.BFSs(start, end, grid, gridSize));
+
+    public static void main() {
+            System.out.println("Hello");
+            BFS.BFSs(start, end, grid, gridSize, frame);
         }
-    }
 }

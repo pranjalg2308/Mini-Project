@@ -3,6 +3,7 @@ package com.company;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
     JFrame window;
@@ -30,7 +31,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-//        window.add(BorderLayout.EAST,makeControlPanel());
         window.setVisible(true);
         this.revalidate();
         this.repaint();
@@ -45,11 +45,45 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
     }
 
     private void initialise() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                pointGridArray[i][j] = new Point();
+        int count = 0;
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                pointGridArray[x][y] = new Point();
+                pointGridArray[x][y].setPointStatus(Status.VIRGIN);
+                pointGridArray[x][y].setXCoordinate(x + 1);
+                pointGridArray[x][y].setYCoordinate(y + 1);
+                ArrayList<Point> neighbors = new ArrayList<Point>();
+                try {
+                    neighbors.add(pointGridArray[x][y + 1]);
+                }
+                catch(Exception e){
+                    count++;
+                    System.out.println(e);
+                }try {
+                    neighbors.add(pointGridArray[x][y - 1]);
+                }
+                catch(Exception e){
+                    count++;
+                    System.out.println(e);
+                }
+                try {
+                    neighbors.add(pointGridArray[x+1][y]);
+                }
+                catch(Exception e){
+                    count++;
+                    System.out.println(e);
+                }
+                try {
+                    neighbors.add(pointGridArray[x-1][y]);
+                }
+                catch(Exception e){
+                    count++;
+                    System.out.println(e);
+                }
+                pointGridArray[x][y].setNeighbors(neighbors);
             }
         }
+        System.out.println(count);
     }
 
     private JPanel makeControlPanel() {
@@ -91,6 +125,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
                         g.setColor(Color.GREEN);
                         g.fillRect(i + 1, j + 1, sizeOfSquare - 1, sizeOfSquare - 1);
                         break;
+                    case Status.CHECKED:
+                        g.setColor(Color.BLUE);
+                        g.fillRect(i+1, j+1, sizeOfSquare-1, sizeOfSquare-1);
                 }
             }
         }
@@ -129,9 +166,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 
     @Override
     public void keyTyped(KeyEvent e) {
+        System.out.println("Hello1");
         if (e.getKeyChar()==KeyEvent.VK_SPACE){
             if (startPoint!=null&&endPoint!=null){
-                new Backend(size,pointGridArray,startPoint, endPoint);
+                System.out.println("Done");
+                new Backend(size,pointGridArray,startPoint, endPoint, this);
             }
         }
     }
