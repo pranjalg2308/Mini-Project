@@ -1,5 +1,7 @@
 package com.company;
 
+import Backend;
+import Status;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,15 +16,13 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
     Point[][] pointGridArray;
     Point startPoint = null;
     Point endPoint = null;
-    Graphics g;
-    Timer timer = new Timer(100, this);
-
+    public Timer timer;
+    Thread back;
 
     public Frame(int gridCount) {
         size = gridCount;
         pointGridArray = new Point[size][size];
         initialise();
-        initialiseNeighbour();
         window = new JFrame("Path Finding");
         window.setContentPane(this);
         window.getContentPane().setPreferredSize(new Dimension(800, 600));
@@ -37,62 +37,73 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
         setFocusTraversalKeysEnabled(false);
         window.setVisible(true);
         this.revalidate();
-        this.repaint();
+        timer = new Timer(1, this);
+        //timer.setInitialDelay(200);
+        timer.start();
     }
 
     public static void main(String[] args) {
         new Frame(20);
     }
 
-    private void initialiseNeighbour() {
+    public Point[][] getPointGridArray(){
+        return this.pointGridArray;
+    }
+//    @Override
+//    public void repaint(){
+//        this.paint(g);
+//    }
+
+    private void initialise() {
         int count = 0;
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
+                pointGridArray[x][y] = new Point();
+                pointGridArray[x][y].setPointStatus(Status.VIRGIN);
+                pointGridArray[x][y].setXCoordinate(x + 1);
+                pointGridArray[x][y].setYCoordinate(y + 1);
+                
+            }
+        }
+        for(int x=0;x<size;x++){
+            for(int y=0;y<size;y++){
                 ArrayList<Point> neighbors = new ArrayList<Point>();
                 try {
+                    count++;
                     neighbors.add(pointGridArray[x][y + 1]);
-                } catch (Exception e) {
-                    count++;
+                }
+                catch(Exception e){
                     System.out.println(e);
                 }
                 try {
+                    count++;
                     neighbors.add(pointGridArray[x][y - 1]);
-                } catch (Exception e) {
-                    count++;
+                }
+                catch(Exception e){
+//                    count++;
                     System.out.println(e);
                 }
                 try {
-                    neighbors.add(pointGridArray[x + 1][y]);
-                } catch (Exception e) {
                     count++;
+                    neighbors.add(pointGridArray[x+1][y]);
+                }
+                catch(Exception e){
+//                    count++;
                     System.out.println(e);
                 }
                 try {
-                    neighbors.add(pointGridArray[x - 1][y]);
-                } catch (Exception e) {
                     count++;
+                    neighbors.add(pointGridArray[x-1][y]);
+                }
+                catch(Exception e){
+//                    count++;
                     System.out.println(e);
                 }
                 pointGridArray[x][y].setNeighbors(neighbors);
             }
         }
         System.out.println(count);
-    }
-
-    public Point[][] getPointGridArray() {
-        return this.pointGridArray;
-    }
-
-    private void initialise() {
-
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                pointGridArray[x][y] = new Point();
-                pointGridArray[x][y].setPointStatus(Status.VIRGIN);
-                pointGridArray[x][y].setXCoordinate(x);
-                pointGridArray[x][y].setYCoordinate(y);
-            }
-        }
+//        timer.start();
     }
 
     private JPanel makeControlPanel() {
@@ -100,14 +111,53 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
         return null;
 
     }
-
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        // Grab dimensions of panel
+    @Override
+    public void paint(Graphics g){
+        super.paint(g);
         int height = getHeight();
         int width = getWidth();
         // Draws grid
+        sizeOfSquare = gridSquareSize / size;
+        g.setColor(Color.lightGray);
+        for (int j = 0; j < gridSquareSize; j += sizeOfSquare) {
+            for (int i = 0; i < gridSquareSize; i += sizeOfSquare) {
+                Point currentPoint = pointGridArray[i / sizeOfSquare][j / sizeOfSquare];
+                switch (currentPoint.getPointStatus()) {
+                    case Status.OBSTACLE:
+                        //draw border
+                        g.setColor(Color.black);
+                        g.fillRect(i + 1, j + 1, sizeOfSquare - 1, sizeOfSquare - 1);
+                        break;
+                    case Status.VIRGIN:
+                        //draw Virgin Point
+                        g.setColor(Color.white);
+                        g.drawRect(i, j, sizeOfSquare, sizeOfSquare);
+                        break;
+                    case Status.START:
+                        //draw Start Point
+                        g.setColor(Color.red);
+                        g.fillRect(i + 1, j + 1, sizeOfSquare - 1, sizeOfSquare - 1);
+                        break;
+                    case Status.END:
+                        //draw End Point
+                        g.setColor(Color.GREEN);
+                        g.fillRect(i + 1, j + 1, sizeOfSquare - 1, sizeOfSquare - 1);
+                        break;
+                    case Status.CHECKED:
+                        g.setColor(Color.BLUE);
+                        g.fillRect(i+1, j+1, sizeOfSquare-1, sizeOfSquare-1);
+                }
+            }
+        }
+
+    }
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int height = getHeight();
+        int width = getWidth();
+//        timer.setDelay(50);
+//        timer.start();
         sizeOfSquare = gridSquareSize / size;
         g.setColor(Color.lightGray);
         for (int j = 0; j < gridSquareSize; j += sizeOfSquare) {
@@ -161,29 +211,26 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
                 endPoint = currentPoint;
             } else
                 currentPoint.setPointStatus(Status.OBSTACLE);
-
+            repaint();
         } else if (SwingUtilities.isRightMouseButton(e)) {
             currentPoint.setPointStatus(Status.VIRGIN);
+            repaint();
         }
-        repaint();
-        System.out.println();
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        //timer.setDelay(100);
+        this.repaint();
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getKeyChar() == KeyEvent.VK_SPACE) {
-            if (startPoint != null && endPoint != null) {
-                System.out.println("Done");
-                Backend backend = new Backend(size, pointGridArray, startPoint, endPoint, this, g);
-                if(!timer.isRunning()) {
-                    timer.start();
-                }
-                backend.run();
+        if (e.getKeyChar()==KeyEvent.VK_SPACE){
+            if (startPoint!=null&&endPoint!=null){
+//                System.out.printlnne");
+                back = new Thread(new Backend(size,pointGridArray,startPoint, endPoint, this));
+                back.start();
             }
         }
     }
@@ -196,7 +243,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 
     @Override
     public void keyReleased(KeyEvent e) {
-        pressedKey = (char) 0;
+
     }
 
     @Override
@@ -236,9 +283,5 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
 
-    }
-
-    public void updateComponents() {
-        this.repaint();
     }
 }
