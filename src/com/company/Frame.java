@@ -1,7 +1,5 @@
+package com.company;
 
-
-//import Backend;
-//import Status;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,11 +14,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
     Point[][] pointGridArray;
     Point startPoint = null;
     Point endPoint = null;
+    Graphics g;
+    Timer timer = new Timer(100, this);
+
 
     public Frame(int gridCount) {
         size = gridCount;
         pointGridArray = new Point[size][size];
         initialise();
+        initialiseNeighbour();
         window = new JFrame("Path Finding");
         window.setContentPane(this);
         window.getContentPane().setPreferredSize(new Dimension(800, 600));
@@ -42,54 +44,55 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
         new Frame(20);
     }
 
-    public Point[][] getPointGridArray(){
-        return this.pointGridArray;
-    }
-
-    private void initialise() {
+    private void initialiseNeighbour() {
         int count = 0;
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                pointGridArray[x][y] = new Point();
-                pointGridArray[x][y].setPointStatus(Status.VIRGIN);
-                pointGridArray[x][y].setXCoordinate(x + 1);
-                pointGridArray[x][y].setYCoordinate(y + 1);
                 ArrayList<Point> neighbors = new ArrayList<Point>();
                 try {
-                    count++;
                     neighbors.add(pointGridArray[x][y + 1]);
-                }
-                catch(Exception e){
+                } catch (Exception e) {
+                    count++;
                     System.out.println(e);
                 }
                 try {
-                    count++;
                     neighbors.add(pointGridArray[x][y - 1]);
-                }
-                catch(Exception e){
-//                    count++;
+                } catch (Exception e) {
+                    count++;
                     System.out.println(e);
                 }
                 try {
+                    neighbors.add(pointGridArray[x + 1][y]);
+                } catch (Exception e) {
                     count++;
-                    neighbors.add(pointGridArray[x+1][y]);
-                }
-                catch(Exception e){
-//                    count++;
                     System.out.println(e);
                 }
                 try {
+                    neighbors.add(pointGridArray[x - 1][y]);
+                } catch (Exception e) {
                     count++;
-                    neighbors.add(pointGridArray[x-1][y]);
-                }
-                catch(Exception e){
-//                    count++;
                     System.out.println(e);
                 }
                 pointGridArray[x][y].setNeighbors(neighbors);
             }
         }
         System.out.println(count);
+    }
+
+    public Point[][] getPointGridArray() {
+        return this.pointGridArray;
+    }
+
+    private void initialise() {
+
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                pointGridArray[x][y] = new Point();
+                pointGridArray[x][y].setPointStatus(Status.VIRGIN);
+                pointGridArray[x][y].setXCoordinate(x);
+                pointGridArray[x][y].setYCoordinate(y);
+            }
+        }
     }
 
     private JPanel makeControlPanel() {
@@ -158,11 +161,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
                 endPoint = currentPoint;
             } else
                 currentPoint.setPointStatus(Status.OBSTACLE);
-            repaint();
+
         } else if (SwingUtilities.isRightMouseButton(e)) {
             currentPoint.setPointStatus(Status.VIRGIN);
-            repaint();
         }
+        repaint();
+        System.out.println();
     }
 
     @Override
@@ -172,10 +176,13 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getKeyChar()==KeyEvent.VK_SPACE){
-            if (startPoint!=null&&endPoint!=null){
-//                System.out.printlnne");
-                Thread backend = new Thread(new Backend(size,pointGridArray,startPoint, endPoint, this));
+        if (e.getKeyChar() == KeyEvent.VK_SPACE) {
+            if (startPoint != null && endPoint != null) {
+                System.out.println("Done");
+                Backend backend = new Backend(size, pointGridArray, startPoint, endPoint, this, g);
+                if(!timer.isRunning()) {
+                    timer.start();
+                }
                 backend.run();
             }
         }
@@ -189,7 +196,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        pressedKey = (char) 0;
     }
 
     @Override
@@ -229,5 +236,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
 
+    }
+
+    public void updateComponents() {
+        this.repaint();
     }
 }
