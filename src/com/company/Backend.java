@@ -1,10 +1,10 @@
 package com.company;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Stack;
+import Point;
+import Status;
+import java.util.*;
 
-import static java.lang.System.out;
+import static java.lang.System.*;
 import static java.lang.Thread.sleep;
 
 interface DFS {
@@ -36,57 +36,63 @@ interface DFS {
         }
     }
 }
-
 // Inspired from hackerearth Tutorials
 interface BFS {
-    public static void BFSs(Point start, Point end, Point[][] grid, int gridSize, Frame frame, Graphics g) {
+    public static void BFSs(Point start, Point end, Point[][] grid,  int gridSize, Frame frame) {
         ArrayList<Point> queue = new ArrayList<Point>();
         queue.add(start);
-        frame.repaint();
         while (!queue.isEmpty()) {
             Point current = queue.remove(0);
             for (Point neighbor : current.getNeighbors()) {
                 try {
-                    if (neighbor.getPointStatus() == Status.END) {
-                        queue.clear();
-                        break;
-                    }
+                    if(neighbor.getPointStatus()==Status.END){
+                    queue.clear();
+                    break;
+                }
                     if (neighbor.getPointStatus() != Status.OBSTACLE && neighbor.getPointStatus() != Status.CHECKED) {
                         queue.add(neighbor);
-                        if (neighbor.getPointStatus() == Status.END || neighbor.getPointStatus() == Status.START)
+                        
+                        if(neighbor.getPointStatus()==Status.END || neighbor.getPointStatus()==Status.START)
                             continue;
                         neighbor.setPointStatus(Status.CHECKED);
-//                        frame.paintComponent(g);
+                        
                     }
-                } catch (Exception e) {
+                    try{
+                        sleep((long)10);
+                    }
+                    catch(Exception e){
+                        System.out.println(e);
+                    }
+                    //frame.timer.setDelay(50);
+                    //frame.timer.start();
+                }
+                catch (Exception e){
                     System.out.println(e);
                 }
             }
         }
     }
 }
-
-public class Backend implements BFS, Runnable {
+public class Backend implements BFS, Runnable{
     private static Point[][] grid;
     private static Point start;
     private static Point end;
     private static int gridSize;
     private static Frame frame;
-    private static Graphics g;
+    private static Timer timer;
 
-
-    public Backend(int gridSize, Point[][] grid, Point start, Point end, Frame frame, Graphics g) {
+    public Backend(int gridSize, Point[][] grid, Point start, Point end, Frame frame) {
+//        grid = new Point[gridSize][gridSize];
         this.grid = grid;
         this.start = start;
         this.end = end;
         this.gridSize = gridSize;
         this.frame = frame;
-        this.g = g;
+//        main();
     }
 
-    @Override
+//    @Override
     public void run() {
-        BFS.BFSs(start, end, grid, gridSize, frame,g);
-        frame.repaint();
+        BFS.BFSs(start, end, grid, gridSize, frame);
     }
 }
