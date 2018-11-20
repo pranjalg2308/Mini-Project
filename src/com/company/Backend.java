@@ -7,26 +7,32 @@ import static java.lang.System.*;
 import static java.lang.Thread.sleep;
 
 interface DFS {
-    default boolean DFS(Point start, Point end, ArrayList<ArrayList<Point>> grid) {
-        int gridSize = grid.size();
-        Stack<Point> adjacentPoints = null; // Probably a debug point
-        for (int x = 0; x < gridSize; x++) {
-            for (int y = 0; y < gridSize; y++) {
-                out.println(grid.get(x).get(y).getXCoordinate() + " " + grid.get(x).get(y));
-                if (grid.get(x).get(y).equals(end))
-                    return true;
-                if (!grid.get(x).get(y).isChecked()) {
-                    adjacentPoints.add((grid.get(x).get(y)));
-                    grid.get(x).get(y).setChecked(true);
-                } else {
-                    adjacentPoints.add((grid.get(x).get(y + 1)));
-                    adjacentPoints.add((grid.get(x + 1).get(y)));
-                    adjacentPoints.add((grid.get(x).get(y - 1)));
-                    adjacentPoints.add((grid.get(x - 1).get(y)));
+    public static void BFSs(Point start, Point end, Point[][] grid,  int gridSize, Frame frame) {
+        Stack<Point> stack = new Stack<Point>();
+        stack.add(start);
+        frame.repaint();
+        while (!stack.isEmpty()) {
+            Point current = stack.remove(0);
+            for (Point neighbor : current.getNeighbors()) {
+                try {
+                    if(neighbor.getPointStatus()==Status.END){
+                    stack.clear();
+                    break;
+                }
+                    if (neighbor.getPointStatus() != Status.OBSTACLE && neighbor.getPointStatus() != Status.CHECKED) {
+                        stack.add(neighbor);
+                        
+                        if(neighbor.getPointStatus()==Status.END || neighbor.getPointStatus()==Status.START)
+                            continue;
+                        neighbor.setPointStatus(Status.CHECKED);
+                        sleep((long)100);
+                    }
+                }
+                catch (Exception e){
+                    System.out.println(e);
                 }
             }
         }
-        return false;
     }
 }
 // Inspired from hackerearth Tutorials
@@ -37,8 +43,6 @@ interface BFS {
         frame.repaint();
         while (!queue.isEmpty()) {
             Point current = queue.remove(0);
-            if(current.getNeighbors().equals(null))
-                continue;
             for (Point neighbor : current.getNeighbors()) {
                 try {
                     if(neighbor.getPointStatus()==Status.END){
