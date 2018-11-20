@@ -1,5 +1,7 @@
-package com.company;
 
+
+//import Backend;
+//import Status;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -54,30 +56,34 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
                 pointGridArray[x][y].setYCoordinate(y + 1);
                 ArrayList<Point> neighbors = new ArrayList<Point>();
                 try {
+                    count++;
                     neighbors.add(pointGridArray[x][y + 1]);
                 }
                 catch(Exception e){
-                    count++;
                     System.out.println(e);
-                }try {
+                }
+                try {
+                    count++;
                     neighbors.add(pointGridArray[x][y - 1]);
                 }
                 catch(Exception e){
-                    count++;
+//                    count++;
                     System.out.println(e);
                 }
                 try {
+                    count++;
                     neighbors.add(pointGridArray[x+1][y]);
                 }
                 catch(Exception e){
-                    count++;
+//                    count++;
                     System.out.println(e);
                 }
                 try {
+                    count++;
                     neighbors.add(pointGridArray[x-1][y]);
                 }
                 catch(Exception e){
-                    count++;
+//                    count++;
                     System.out.println(e);
                 }
                 pointGridArray[x][y].setNeighbors(neighbors);
@@ -166,11 +172,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, Mous
 
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("Hello1");
         if (e.getKeyChar()==KeyEvent.VK_SPACE){
             if (startPoint!=null&&endPoint!=null){
-                System.out.println("Done");
-                new Backend(size,pointGridArray,startPoint, endPoint, this);
+//                System.out.printlnne");
+                Thread backend = new Thread(new Backend(size,pointGridArray,startPoint, endPoint, this));
+                backend.run();
             }
         }
     }

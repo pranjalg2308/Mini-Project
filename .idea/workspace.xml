@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a3b8a5a8-cebb-4039-88ad-b9c820806c27" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Backend.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Backend.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Colors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Colors.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Frame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Point.java" afterDir="false" />
-    </list>
+    <list default="true" id="a3b8a5a8-cebb-4039-88ad-b9c820806c27" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,16 +12,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Frame.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Frame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/company/Frame.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
-              <caret line="107" column="41" lean-forward="true" selection-start-line="107" selection-start-column="41" selection-end-line="107" selection-end-column="41" />
+              <caret line="107" column="41" selection-start-line="107" selection-start-column="41" selection-end-line="107" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1298#1299#0" expanded="true" />
                 <element signature="e#1340#1341#0" expanded="true" />
-                <element signature="e#1842#1849#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -36,7 +29,7 @@
       <file leaf-file-name="JComponent.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk-10.0.1/lib/src.zip!/java.desktop/javax/swing/JComponent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
+            <state relative-caret-position="12342">
               <caret line="792" column="19" selection-start-line="792" selection-start-column="19" selection-end-line="792" selection-end-column="19" />
             </state>
           </provider>
@@ -66,7 +59,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Backend.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Backend.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/Backend.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
@@ -142,8 +135,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -272,11 +265,12 @@
       <workItem from="1542616655583" duration="1436000" />
       <workItem from="1542618406550" duration="15000" />
       <workItem from="1542622121838" duration="1505000" />
+      <workItem from="1542718348132" duration="71000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24344000" />
+    <option name="totallyTimeSpent" value="24415000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -382,7 +376,6 @@
             <element signature="imports" expanded="true" />
             <element signature="e#1298#1299#0" expanded="true" />
             <element signature="e#1340#1341#0" expanded="true" />
-            <element signature="e#1842#1849#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -413,7 +406,6 @@
             <element signature="imports" expanded="true" />
             <element signature="e#1298#1299#0" expanded="true" />
             <element signature="e#1340#1341#0" expanded="true" />
-            <element signature="e#1842#1849#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -636,20 +628,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/company/Backend.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="42" column="43" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1319#1326#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-10.0.1/lib/src.zip!/java.desktop/javax/swing/JComponent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
+        <state relative-caret-position="12342">
           <caret line="792" column="19" selection-start-line="792" selection-start-column="19" selection-end-line="792" selection-end-column="19" />
         </state>
       </provider>
@@ -657,12 +638,22 @@
     <entry file="file://$PROJECT_DIR$/src/com/company/Frame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="107" column="41" lean-forward="true" selection-start-line="107" selection-start-column="41" selection-end-line="107" selection-end-column="41" />
+          <caret line="107" column="41" selection-start-line="107" selection-start-column="41" selection-end-line="107" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1298#1299#0" expanded="true" />
             <element signature="e#1340#1341#0" expanded="true" />
-            <element signature="e#1842#1849#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/Backend.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="42" column="43" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1319#1326#0" expanded="true" />
           </folding>
         </state>
       </provider>

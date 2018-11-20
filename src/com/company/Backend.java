@@ -1,4 +1,6 @@
-package com.company;
+
+//import Point;
+//import Status;
 import java.util.*;
 
 import static java.lang.System.*;
@@ -30,35 +32,36 @@ interface DFS {
 // Inspired from hackerearth Tutorials
 interface BFS {
     public static void BFSs(Point start, Point end, Point[][] grid,  int gridSize, Frame frame) {
-        Stack<Point> queue = new Stack<Point>();
+        ArrayList<Point> queue = new ArrayList<Point>();
         queue.add(start);
-        start.setPointStatus(Status.CHECKED);
         frame.repaint();
         while (!queue.isEmpty()) {
-            Point current = queue.pop();
-//            queue.remove(current);
+            Point current = queue.remove(0);
+            if(current.getNeighbors().equals(null))
+                continue;
             for (Point neighbor : current.getNeighbors()) {
                 try {
+                    if(neighbor.getPointStatus()==Status.END){
+                    queue.clear();
+                    break;
+                }
                     if (neighbor.getPointStatus() != Status.OBSTACLE && neighbor.getPointStatus() != Status.CHECKED) {
                         queue.add(neighbor);
+                        
+                        if(neighbor.getPointStatus()==Status.END || neighbor.getPointStatus()==Status.START)
+                            continue;
                         neighbor.setPointStatus(Status.CHECKED);
-                        frame.repaint();
-                        sleep((long) 1000);
+                        sleep((long)100);
                     }
                 }
                 catch (Exception e){
                     System.out.println(e);
                 }
-                try {
-                    sleep((long)1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
 }
-public class Backend implements BFS {
+public class Backend implements BFS, Runnable{
     private static Point[][] grid;
     private static Point start;
     private static Point end;
@@ -72,12 +75,10 @@ public class Backend implements BFS {
         this.end = end;
         this.gridSize = gridSize;
         this.frame = frame;
-        main();
     }
 
-
-    public static void main() {
-            System.out.println("Hello");
-            BFS.BFSs(start, end, grid, gridSize, frame);
-        }
+    @Override
+    public void run() {
+        BFS.BFSs(start, end, grid, gridSize, frame);
+    }
 }
